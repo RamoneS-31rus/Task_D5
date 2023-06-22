@@ -1,0 +1,35 @@
+{% extends 'default.html' %}
+{% load custom_filters %}
+
+{% block content %}
+
+{% if object_list %}
+<div class="container my-3">
+  <div class="row row-cols-1 row-cols-md-2 g-3">
+    {% for obj in object_list %}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ obj.title|censor }}</h5>
+          {% if obj.type == 'Новость' %}
+          <a class="stretched-link" href="{% url 'news_detail' obj.pk %}"></a>
+          {% elif obj.type == 'Статья' %}
+          <a class="stretched-link" href="{% url 'article_detail' obj.pk %}"></a>
+          {% endif %}
+          <p class="card-text">{{ obj.text|censor|truncatechars:20 }}</p>
+        </div>
+        <div class="card-footer bg-white">
+          <small class="text-body-secondary text-muted">{{ obj.type}} {{ obj.date_create|date:'d.m.Y' }}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<!--- Пагинация  --->
+{% include "pagination.html" %}
+{% else %}
+<h1>новостей нет</h1>
+{% endif %}
+
+{% endblock content %}

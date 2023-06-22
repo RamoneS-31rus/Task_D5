@@ -1,0 +1,33 @@
+{% load search_pagination %}
+
+{% if is_paginated %}
+<nav aria-label="Page navigation example" class="align-items-center">
+  <ul class="pagination justify-content-center mb-2">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link shadow-none" href="?{% param_replace page=1 %}" tabindex="-1" title="Первая страница">
+                  <i class="bi bi-chevron-double-left"></i>
+              </a>
+            </li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.paginator.num_pages > 1 %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active" aria-current="page">
+                      <span class="page-link">{{ num }}</span>
+                    </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link shadow-none" href="?{% param_replace page=num %}">{{ num }}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link shadow-none" href="?{% param_replace page=paginator.num_pages %}" title="Последняя страница: {{ page_obj.paginator.num_pages }}">
+                  <i class="bi bi-chevron-double-right"></i>
+              </a>
+            </li>
+        {% endif %}
+  </ul>
+</nav>
+{% endif %}

@@ -1,0 +1,28 @@
+{%extends 'default.html' %}
+{% load custom_filters %}
+
+{% block content %}
+
+<div class="container mt-3">
+    <div class="card">
+        <h5 class="card-header bg-white text-center">{{ object.title|censor }}</h5>
+        <div class="card-body">
+            <p class="card-text">{{ object.text|censor }}</p>
+            <p class="card-text"><small class="text-muted">{{ object.date_create|date:'d.m.Y' }}</small>
+                {% if request.user.is_authenticated and perms.news.add_post %}
+                {% if 'news' in request.get_full_path %}
+                <a class="btn btn-sm btn-warning" href="{% url 'news_update' object.pk %}"
+                    role="button">Редактировать</a>
+                <a class="btn btn-sm btn-danger" href="{% url 'news_delete' object.pk %}" role="button">Удалить</a>
+                {% elif 'articles' in request.get_full_path %}
+                <a class="btn btn-sm btn-warning" href="{% url 'article_update' object.pk %}"
+                    role="button">Редактировать</a>
+                <a class="btn btn-sm btn-danger" href="{% url 'article_delete' object.pk %}" role="button">Удалить</a>
+                {% endif %}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

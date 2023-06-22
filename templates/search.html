@@ -1,0 +1,66 @@
+{% extends 'default.html' %}
+{% load custom_filters %}
+
+
+
+{% block content %}    
+
+{%  if object_list %}  
+    <div class="container my-3">
+        <div class="d-flex justify-content-between align-items-center">               
+            <div class="col-auto"> 
+                <form method="GET" class="mb-2">
+                    <div class="row gx-1 align-items-center justify-content-start">
+                        <div class="col-auto">
+                            {{ filterset.form.title.label }}:
+                        </div>
+                        <div class="col-auto">
+                            {{ filterset.form.title }}
+                        </div>
+                        <div class="col-auto">
+                            {{ filterset.form.category.label }}:
+                        </div>
+                        <div class="col-auto">
+                            {{ filterset.form.category }}
+                        </div>
+                        <div class="col-auto">
+                            {{ filterset.form.date_create.label }}:
+                        </div>
+                        <div class="col-auto">
+                            {{ filterset.form.date_create }}
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">Найти</button>
+                        </div>
+                    </div>                    
+                </form>    
+            </div>           
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+            {% for obj in object_list %}        
+                <div class="col">
+                    <div class="card h-100">                                  
+                        <div class="card-body">
+                            <h5 class="card-title">{{ obj.title|censor }}</h5>
+                            {% if 'news' in request.get_full_path %}                  
+                                <a class="stretched-link" href="{% url 'news_detail' obj.pk %}"></a>
+                            {% elif 'articles' in request.get_full_path %}
+                                <a class="stretched-link" href="{% url 'article_detail' obj.pk %}"></a>
+                            {% endif %}                            
+                            <p class="card-text">{{ obj.text|censor|truncatechars:20 }}</p>                            
+                        </div>
+                        <div class="card-footer bg-white">
+                            <small class="text-body-secondary text-muted">{{ obj.type}} {{ obj.date_create|date:'d.m.Y' }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!--- Пагинация  --->
+    {% include "pagination.html" %}
+{%  else %}
+    <h1>новостей нет</h1>
+{% endif %}
+
+{% endblock content %}

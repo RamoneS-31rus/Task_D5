@@ -1,0 +1,14 @@
+{%extends 'default.html' %}
+
+{% block content %}
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button class="btn btn-success mt-2">Добавить</button>
+        <button type="button" class="btn btn-primary mt-2" onclick="javascript:window.history.back()">Отменить</button>
+    </form>
+</div>
+
+{% endblock content %}
