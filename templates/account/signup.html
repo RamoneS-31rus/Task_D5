@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'font/bootstrap-icons.css'%}" />
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container-fluid d-flex justify-content-center align-middle my-3">
+        <form method="POST" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            <div class="input-group mb-2">
+                <span class="input-group-text col-5">Email</span>
+                <input type="email" name="email" class="form-control shadow-none">
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text col-5">Пароль</span>
+                <input type="password" name="password1" class="form-control shadow-none">
+            </div>
+            <div class="input-group mb-2">
+                <span class="input-group-text col-5">Повторите пароль</span>
+                <input type="password" name="password2" class="form-control shadow-none">
+            </div>
+            {% if form.errors %}
+            {{ form.errors }}
+            {% endif %}
+            <button type="submit" class="btn btn-primary me-3">Продолжить</button>
+            <a href="{% url 'account_login' %}">Авторизация</a>
+        </form>
+    </div>
+</body>
+
+</html>
